@@ -20,7 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         
         let pokemonViewController = ModuleBuilder.createPokemonModule()
-        window?.rootViewController = pokemonViewController
+        let navBar = UINavigationController(rootViewController: pokemonViewController)
+        window?.rootViewController = navBar
         window?.makeKeyAndVisible()
     }
 }

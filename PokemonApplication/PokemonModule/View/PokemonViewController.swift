@@ -68,13 +68,16 @@ class PokemonViewController: UIViewController,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+
         tapOnCellAction(indexPath)
     }
     
     @objc
     func tapOnCellAction(_ sender: IndexPath) {
+//    ??      let details = presenter.pokemons?[indexPath.row]
         
+        let detailsViewController = ModuleBuilder.createDetailsModule()
+        navigationController?.pushViewController(detailsViewController, animated: true)
     }
 }
 

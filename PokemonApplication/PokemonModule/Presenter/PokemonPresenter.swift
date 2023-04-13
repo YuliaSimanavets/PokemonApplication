@@ -29,6 +29,6 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
     }
     
     func getPokemons() {
-        print("hi")
+        print("PokemonPresenter")
     }
 }
