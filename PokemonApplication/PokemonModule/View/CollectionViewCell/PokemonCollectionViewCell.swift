@@ -9,6 +9,7 @@ import UIKit
 
 struct PokemonModel {
     let name: String
+    let url: String
 }
 
 class PokemonCollectionViewCell: BaseCollectionViewCell {

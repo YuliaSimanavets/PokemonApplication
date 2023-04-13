@@ -27,6 +27,7 @@ class DataManager: DataManagerProtocol {
                 
                 let pokemonData = try? JSONDecoder().decode(Pokemons.self, from: responseData)
                 
+                print("pokemonData: \(pokemonData?.results.count)")
                 DispatchQueue.main.async {
                     completion(pokemonData?.results ?? [])
                 }

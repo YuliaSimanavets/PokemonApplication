@@ -13,6 +13,7 @@ class PokemonViewController: UIViewController,
                              UICollectionViewDelegateFlowLayout {
 
     var presenter: PokemonViewPresenterProtocol!
+    var activityIndicator = UIActivityIndicatorView()
     
     private let pokemonsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -24,8 +25,8 @@ class PokemonViewController: UIViewController,
     }()
     
 // Array for a test run (data is not from the network)
-    private let arrayNames = ["bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard"]
-    
+    private let arrayName = ["bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard"]
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,6 +39,8 @@ class PokemonViewController: UIViewController,
         pokemonsCollectionView.register(PokemonCollectionViewCell.self,
                                         forCellWithReuseIdentifier: PokemonCollectionViewCell.identifier)
 
+        createActivityIndicator()
+        
         NSLayoutConstraint.activate([
             pokemonsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             pokemonsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -47,14 +50,17 @@ class PokemonViewController: UIViewController,
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayNames.count
+        return arrayName.count
+//        return presenter.pokemons?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PokemonCollectionViewCell.identifier, for: indexPath) as? PokemonCollectionViewCell else { return UICollectionViewCell() }
         
-        let item = arrayNames[indexPath.item]
-        cell.set(.init(name: item))
+//        let item = presenter.pokemons?[indexPath.item].name
+//        let url = presenter.pokemons?[indexPath.item].url
+        let name = arrayName[indexPath.item]
+        cell.set(.init(name: name, url: ""))
         
         return cell
     }
@@ -74,10 +80,17 @@ class PokemonViewController: UIViewController,
     
     @objc
     func tapOnCellAction(_ sender: IndexPath) {
-//    ??      let details = presenter.pokemons?[indexPath.row]
+        let detailsUrl = presenter.pokemons?[sender.row].url
         
-        let detailsViewController = ModuleBuilder.createDetailsModule()
+        let detailsViewController = ModuleBuilder.createDetailsModule(url: detailsUrl!)
         navigationController?.pushViewController(detailsViewController, animated: true)
+    }
+    
+    private func createActivityIndicator() {
+
+        activityIndicator.center = self.view.center
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
     }
 }
 
