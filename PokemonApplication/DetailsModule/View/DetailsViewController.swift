@@ -10,20 +10,19 @@ import UIKit
 class DetailsViewController: UIViewController {
 
     var presenter: DetailsViewPresenterProtocol!
-    
-    private let customView = CustomDetailsView()
-    
-    private let details = CustomViewModel(pokemonsName: "Dragon", pokemonsType: "night", pokemonsHeight: "7", pokemonsWeight: "20", pokemonsImage: UIImage(systemName: "sunrise.circle"))
+    private var customView = CustomDetailsView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Pokemon Details"
         view.backgroundColor = .lightGray
         
         view.addSubview(customView)
         customView.translatesAutoresizingMaskIntoConstraints = false
-        customView.set(details)
         
+        presenter.getPokemon()
+    
         NSLayoutConstraint.activate([
             customView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             customView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -36,13 +35,15 @@ class DetailsViewController: UIViewController {
 extension DetailsViewController: DetailsViewProtocol {
     
     func succes() {
-        print("everything is OK")
+        print("succes")
     }
     
     func failure(error: Error) {
-        let alertController = UIAlertController(title: title, message: "Something went wrong :(", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion: nil)
+        print(error.localizedDescription)
+    }
+
+    func setPokemon(pokemon: CustomViewModel?) {
+        guard let pokemon = pokemon else { return }
+        customView.set(pokemon)
     }
 }

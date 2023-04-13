@@ -23,10 +23,7 @@ class PokemonViewController: UIViewController,
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    
-// Array for a test run (data is not from the network)
-    private let arrayName = ["bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard"]
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,18 +47,17 @@ class PokemonViewController: UIViewController,
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayName.count
-//        return presenter.pokemons?.count ?? 0
+        
+        return presenter.pokemons?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PokemonCollectionViewCell.identifier, for: indexPath) as? PokemonCollectionViewCell else { return UICollectionViewCell() }
         
-//        let item = presenter.pokemons?[indexPath.item].name
-//        let url = presenter.pokemons?[indexPath.item].url
-        let name = arrayName[indexPath.item]
-        cell.set(.init(name: name, url: ""))
-        
+        let name = presenter.pokemons?[indexPath.item].name
+        let url = presenter.pokemons?[indexPath.item].url
+        cell.set(.init(name: name ?? "", url: url ?? ""))
         return cell
     }
     
@@ -74,15 +70,15 @@ class PokemonViewController: UIViewController,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+        
         tapOnCellAction(indexPath)
     }
     
     @objc
     func tapOnCellAction(_ sender: IndexPath) {
-        let detailsUrl = presenter.pokemons?[sender.row].url
         
-        let detailsViewController = ModuleBuilder.createDetailsModule(url: detailsUrl!)
+        guard let detailsUrl = presenter.pokemons?[sender.row].url else { return }
+        let detailsViewController = ModuleBuilder.createDetailsModule(url: detailsUrl)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
@@ -97,10 +93,11 @@ class PokemonViewController: UIViewController,
 extension PokemonViewController: PokemonViewProtocol {
     
     func succes() {
+        activityIndicator.stopAnimating()
         pokemonsCollectionView.reloadData()
     }
     
     func failure(error: Error) {
-        print(error)
+        print(error.localizedDescription)
     }
 }

@@ -11,7 +11,6 @@ import UIKit
 protocol PokemonViewProtocol: AnyObject {
     func succes()
     func failure(error: Error)
-    var activityIndicator: UIActivityIndicatorView { get set }
 }
 
 protocol PokemonViewPresenterProtocol: AnyObject {
@@ -33,12 +32,19 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
     }
     
     func getPokemons() {
-        dataManager.getPokemons { [weak self] pokemons in
+        
+        dataManager.getPokemons { [weak self] result in
             guard let self = self else { return }
-            
-            self.pokemons = pokemons.map({ PokemonModel(name: $0.name, url: $0.url) })
-            self.view?.activityIndicator.stopAnimating()
-            print("PokemonPresenter: \(String(describing: pokemons))")
+
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let pokemons):
+                    self.pokemons = pokemons?.map({ PokemonModel(name: $0.name, url: $0.url) })
+                    self.view?.succes()
+                case .failure(let error):
+                    self.view?.failure(error: error)
+                }
+            }
         }
     }
 }

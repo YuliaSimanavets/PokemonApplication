@@ -24,7 +24,8 @@ class ModuleBuilder: Builder {
     
     static func createDetailsModule(url: String) -> UIViewController {
         let view = DetailsViewController()
-        let presenter = DetailsPresenter(view: view)
+        let dataManager = DataManager()
+        let presenter = DetailsPresenter(view: view, dataManager: dataManager, pokemonURL: url)
         view.presenter = presenter
         return view
     }

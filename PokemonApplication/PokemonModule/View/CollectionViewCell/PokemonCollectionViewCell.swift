@@ -25,17 +25,42 @@ class PokemonCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
     
+    private let chevronImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "chevron.right")
+        imageView.tintColor = .black
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let dotImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "circle.dotted")
+        imageView.tintColor = .black
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     override func setupView() {
         super.setupView()
         
-        contentView.addSubview(nameLabel)
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .cellsColor
         contentView.layer.cornerRadius = 12
         
+        contentView.addSubview(dotImageView)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(chevronImageView)
+        
         NSLayoutConstraint.activate([
-            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -20)
+            dotImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            dotImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            
+            nameLabel.centerYAnchor.constraint(equalTo: dotImageView.centerYAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: dotImageView.trailingAnchor, constant: 10),
+            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: chevronImageView.leadingAnchor, constant: -20),
+            
+            chevronImageView.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
+            chevronImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15)
         ])
     }
     

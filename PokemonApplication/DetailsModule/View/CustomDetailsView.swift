@@ -12,7 +12,7 @@ struct CustomViewModel {
     let pokemonsType: String
     let pokemonsHeight: String
     let pokemonsWeight: String
-    let pokemonsImage: UIImage?
+//    let pokemonsImage: UIImage?  // sprites по url
 }
 
 class CustomDetailsView: UIView {
@@ -26,21 +26,21 @@ class CustomDetailsView: UIView {
     
     private let pokemonsTypeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 18, weight: .heavy)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let pokemonsHeightLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 18, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private let pokemonsWeightLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 18, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -54,9 +54,9 @@ class CustomDetailsView: UIView {
  
     private let stackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 20
-        stackView.alignment = .center
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.alignment = .leading
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -76,7 +76,7 @@ class CustomDetailsView: UIView {
     
     private func setupView() {
         
-        backgroundColor = .systemYellow
+        backgroundColor = .cellsColor
         layer.cornerRadius = 20
         addSubview(pokemonsNameLabel)
         addSubview(pokemonsImageView)
@@ -95,7 +95,6 @@ class CustomDetailsView: UIView {
             pokemonsImageView.widthAnchor.constraint(equalToConstant: 100),
             pokemonsImageView.heightAnchor.constraint(equalToConstant: 100),
             
-//            stackView.topAnchor.constraint(equalTo: pokemonsImageView.bottomAnchor, constant: 50),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
@@ -106,9 +105,9 @@ class CustomDetailsView: UIView {
     func set(_ data: CustomViewModel) {
         
         pokemonsNameLabel.text = data.pokemonsName
-        pokemonsTypeLabel.text = data.pokemonsType
-        pokemonsWeightLabel.text = data.pokemonsWeight + " " + "kg"
-        pokemonsHeightLabel.text = data.pokemonsHeight + " " + "cm"
-        pokemonsImageView.image = data.pokemonsImage
+        pokemonsTypeLabel.text = "type: " + data.pokemonsType
+        pokemonsWeightLabel.text = "weight: " + data.pokemonsWeight + " " + "kg"
+        pokemonsHeightLabel.text = "height: " +  data.pokemonsHeight + " " + "cm"
+//        pokemonsImageView.image = data.pokemonsImage
     }
 }
