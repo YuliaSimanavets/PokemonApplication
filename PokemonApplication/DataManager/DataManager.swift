@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 protocol DataManagerProtocol {
     func getPokemons(completion: @escaping (Result<[Pokemon]?, Error>) -> Void)
     func getDetailsPokemon(url: String, completion: @escaping (Result<PokemonDetails?, Error>) -> Void)
+    func getImage(url: String) -> UIImage?
 }
 
 class DataManager: DataManagerProtocol {
@@ -55,5 +57,21 @@ class DataManager: DataManagerProtocol {
             }
             
         }.resume()
+    }
+
+    func getImage(url: String) -> UIImage? {
+        
+        guard let imageURL = URL(string: url) else { return nil }
+        var pokemonImage: UIImage?
+        
+        do {
+            let imageData = try? Data(contentsOf: imageURL)
+            pokemonImage = UIImage(data: imageData!)
+
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        return pokemonImage
     }
 }

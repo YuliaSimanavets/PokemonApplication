@@ -13,7 +13,7 @@ class PokemonViewController: UIViewController,
                              UICollectionViewDelegateFlowLayout {
 
     var presenter: PokemonViewPresenterProtocol!
-    var activityIndicator = UIActivityIndicatorView()
+    private var activityIndicator = UIActivityIndicatorView()
     
     private let pokemonsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -37,7 +37,6 @@ class PokemonViewController: UIViewController,
                                         forCellWithReuseIdentifier: PokemonCollectionViewCell.identifier)
 
         createActivityIndicator()
-        showToast(message: "Loading...", seconds: 1.0)
         
         NSLayoutConstraint.activate([
             pokemonsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -88,18 +87,6 @@ class PokemonViewController: UIViewController,
         activityIndicator.center = self.view.center
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-    }
-    
-    func showToast(message : String, seconds: Double){
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.view.backgroundColor = .systemGray5
-        alert.view.alpha = 0.1
-        alert.view.layer.cornerRadius = 15
-        self.present(alert, animated: true)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            alert.dismiss(animated: true)
-        }
     }
 }
 

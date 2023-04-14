@@ -11,6 +11,7 @@ class DetailsViewController: UIViewController {
 
     var presenter: DetailsViewPresenterProtocol!
     private var customView = CustomDetailsView()
+    private var activityIndicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +23,8 @@ class DetailsViewController: UIViewController {
         customView.translatesAutoresizingMaskIntoConstraints = false
         
         presenter.getPokemon()
-    
+        createActivityIndicator()
+        
         NSLayoutConstraint.activate([
             customView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             customView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -30,20 +32,34 @@ class DetailsViewController: UIViewController {
             customView.heightAnchor.constraint(equalToConstant: 350)
         ])
     }
+    
+    private func createActivityIndicator() {
+
+        activityIndicator.center = self.view.center
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+    }
 }
 
 extension DetailsViewController: DetailsViewProtocol {
     
-    func succes() {
-        print("succes")
-    }
-    
-    func failure(error: Error) {
-        print(error.localizedDescription)
-    }
-
     func setPokemon(pokemon: CustomViewModel?) {
         guard let pokemon = pokemon else { return }
         customView.set(pokemon)
+    }
+    
+    func succes() {
+        activityIndicator.stopAnimating()
+    }
+    
+    func failure(error: Error) {
+        let alertController = UIAlertController(title: "Something was wrong :(",
+                                                message: "Please, try again later",
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    
+        print(error.localizedDescription)
     }
 }

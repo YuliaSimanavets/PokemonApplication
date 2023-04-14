@@ -12,7 +12,7 @@ struct CustomViewModel {
     let pokemonsType: String
     let pokemonsHeight: String
     let pokemonsWeight: String
-//    let pokemonsImage: UIImage?  // sprites по url
+    let pokemonsImage: UIImage?
 }
 
 class CustomDetailsView: UIView {
@@ -48,6 +48,7 @@ class CustomDetailsView: UIView {
     private let pokemonsImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -90,10 +91,10 @@ class CustomDetailsView: UIView {
             pokemonsNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
             pokemonsNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            pokemonsImageView.topAnchor.constraint(equalTo: pokemonsNameLabel.bottomAnchor, constant: 40),
+            pokemonsImageView.topAnchor.constraint(equalTo: pokemonsNameLabel.bottomAnchor, constant: 20),
             pokemonsImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            pokemonsImageView.widthAnchor.constraint(equalToConstant: 100),
-            pokemonsImageView.heightAnchor.constraint(equalToConstant: 100),
+            pokemonsImageView.widthAnchor.constraint(equalToConstant: 120),
+            pokemonsImageView.heightAnchor.constraint(equalToConstant: 120),
             
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
@@ -108,6 +109,6 @@ class CustomDetailsView: UIView {
         pokemonsTypeLabel.text = "type: " + data.pokemonsType
         pokemonsWeightLabel.text = "weight: " + data.pokemonsWeight + " " + "kg"
         pokemonsHeightLabel.text = "height: " +  data.pokemonsHeight + " " + "cm"
-//        pokemonsImageView.image = data.pokemonsImage
+        pokemonsImageView.image = data.pokemonsImage
     }
 }
