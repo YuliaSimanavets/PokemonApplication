@@ -35,7 +35,7 @@ class PokemonCollectionViewCell: BaseCollectionViewCell {
     
     private let dotImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "circle.dotted")
+        imageView.image = UIImage(systemName: "seal.fill")
         imageView.tintColor = .black
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

@@ -23,6 +23,8 @@ class PokemonViewController: UIViewController,
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
+    
+    private let headerTitle = "Choose your pokemon 🙌🏼"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,11 +37,14 @@ class PokemonViewController: UIViewController,
         
         pokemonsCollectionView.register(PokemonCollectionViewCell.self,
                                         forCellWithReuseIdentifier: PokemonCollectionViewCell.identifier)
+        pokemonsCollectionView.register(HeaderCollectionView.self,
+                                        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                        withReuseIdentifier: HeaderCollectionView.identifier)
 
         createActivityIndicator()
         
         NSLayoutConstraint.activate([
-            pokemonsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            pokemonsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             pokemonsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             pokemonsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             pokemonsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
@@ -72,6 +77,20 @@ class PokemonViewController: UIViewController,
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         tapOnCellAction(indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionView.identifier, for: indexPath) as? HeaderCollectionView else { return UICollectionReusableView() }
+        
+        let item = headerTitle
+        header.set(.init(titleText: item))
+        
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.size.width, height: 60)
     }
     
     @objc
