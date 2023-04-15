@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA0AD47729EAD9DD002E50BF /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0AD47629EAD9DD002E50BF /* CoreDataManager.swift */; };
+		CA0AD47A29EAD9F8002E50BF /* PokemonModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CA0AD47829EAD9F8002E50BF /* PokemonModel.xcdatamodeld */; };
 		CA1E5EFF29E8199900859528 /* DetailsPokemonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1E5EFE29E8199900859528 /* DetailsPokemonModel.swift */; };
 		CA1E5F0229E86C2A00859528 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1E5F0129E86C2900859528 /* UIColor.swift */; };
 		CA77776F29E6FC8F00901CBD /* PokemonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA77776E29E6FC8F00901CBD /* PokemonCollectionViewCell.swift */; };
@@ -48,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CA0AD47629EAD9DD002E50BF /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		CA0AD47929EAD9F8002E50BF /* PokemonModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PokemonModel.xcdatamodel; sourceTree = "<group>"; };
 		CA1E5EFE29E8199900859528 /* DetailsPokemonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPokemonModel.swift; sourceTree = "<group>"; };
 		CA1E5F0129E86C2900859528 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		CA77776E29E6FC8F00901CBD /* PokemonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -138,6 +142,8 @@
 			isa = PBXGroup;
 			children = (
 				CA77777529E71CA900901CBD /* DataManager.swift */,
+				CA0AD47629EAD9DD002E50BF /* CoreDataManager.swift */,
+				CA0AD47829EAD9F8002E50BF /* PokemonModel.xcdatamodeld */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -419,7 +425,9 @@
 				CA1E5F0229E86C2A00859528 /* UIColor.swift in Sources */,
 				CA77777629E71CA900901CBD /* DataManager.swift in Sources */,
 				CAC276ED29E5E60E006BF348 /* PokemonPresenter.swift in Sources */,
+				CA0AD47A29EAD9F8002E50BF /* PokemonModel.xcdatamodeld in Sources */,
 				CA77778129E732B900901CBD /* DetailsViewController.swift in Sources */,
+				CA0AD47729EAD9DD002E50BF /* CoreDataManager.swift in Sources */,
 				CA1E5EFF29E8199900859528 /* DetailsPokemonModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -762,6 +770,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		CA0AD47829EAD9F8002E50BF /* PokemonModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CA0AD47929EAD9F8002E50BF /* PokemonModel.xcdatamodel */,
+			);
+			currentVersion = CA0AD47929EAD9F8002E50BF /* PokemonModel.xcdatamodel */;
+			path = PokemonModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = CAC276AD29E5E571006BF348 /* Project object */;
 }
