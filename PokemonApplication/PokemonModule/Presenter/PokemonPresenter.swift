@@ -47,7 +47,7 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
                 case .success(let pokemons):
                     self.pokemons = pokemons?.map({ PokemonModel(name: $0.name, url: $0.url) })
                     self.deletePokemonsFromDataBase()
-                    self.savePokemons(pokemons: self.pokemons ?? [])
+                    self.savePokemonToDatabase(pokemons: self.pokemons ?? [])
                     self.view?.succes()
                 case .failure(let error):
                     self.view?.failure(error: error)
@@ -55,20 +55,15 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
             }
         }
     }
-    
-    func savePokemons(pokemons: [PokemonModel]) {
+
+    func savePokemonToDatabase(pokemons: [PokemonModel]) {
         
-        for pokemon in pokemons {
-            savePokemonToDatabase(pokemon: pokemon)
+        for item in pokemons {
+            guard let pokemonEntity = NSEntityDescription.insertNewObject(forEntityName: "PokemonEntity", into: context) as? PokemonEntity else { return }
+            
+            pokemonEntity.name = item.name
+            pokemonEntity.url = item.url
         }
-    }
-    
-    func savePokemonToDatabase(pokemon: PokemonModel) {
-        
-        guard let pokemonEntity = NSEntityDescription.insertNewObject(forEntityName: "PokemonEntity", into: context) as? PokemonEntity else { return }
-        
-        pokemonEntity.name = pokemon.name
-        pokemonEntity.url = pokemon.url
         
         if context.hasChanges {
             do {
