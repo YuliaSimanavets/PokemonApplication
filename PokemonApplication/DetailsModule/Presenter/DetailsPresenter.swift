@@ -45,12 +45,11 @@ class DetailsPresenter: DetailsViewPresenterProtocol {
                     self.pokemon = pokemonDetails
                     self.view?.succes()
                     guard let pokemon = self.pokemon else { return }
-                    
                     self.view?.setPokemon(pokemon: CustomViewModel(pokemonsName: pokemon.name,
                                                                    pokemonsType: pokemon.types[0].type.name,
                                                                    pokemonsHeight: String(pokemon.height),
                                                                    pokemonsWeight: String(pokemon.weight),
-                                                            pokemonsImage: self.dataManager.getImage(url: pokemon.sprites.frontDefault)))
+                                                                   pokemonsImage: self.dataManager.getImage(url: pokemon.sprites.frontDefault)))
                 case .failure(let error):
                     self.view?.failure(error: error)
                 }

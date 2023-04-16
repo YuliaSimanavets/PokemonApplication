@@ -65,7 +65,6 @@ class PokemonCollectionViewCell: BaseCollectionViewCell {
     }
     
     func set(_ data: PokemonModel) {
-
         nameLabel.text = data.name
     }
 }

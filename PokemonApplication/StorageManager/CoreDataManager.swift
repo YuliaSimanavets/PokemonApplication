@@ -13,11 +13,14 @@ class CoreDataManager {
     static let shared = CoreDataManager()
     
     private init() {}
+    
+    var context: NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
         
     lazy var persistentContainer: NSPersistentContainer = {
         
         let managedObjectModelName = "PokemonModel"
-
         let container = NSPersistentContainer(name: managedObjectModelName)
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {
@@ -26,10 +29,6 @@ class CoreDataManager {
         }
         return container
     }()
-    
-    var context: NSManagedObjectContext {
-        return persistentContainer.viewContext
-    }
     
     func saveContext() {
         guard context.hasChanges else { return }

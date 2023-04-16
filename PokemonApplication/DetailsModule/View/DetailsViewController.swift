@@ -16,7 +16,6 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Pokemon Details"
         view.backgroundColor = .lightGray
         
         view.addSubview(customView)
@@ -34,7 +33,6 @@ class DetailsViewController: UIViewController {
     }
     
     private func createActivityIndicator() {
-
         activityIndicator.center = self.view.center
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
@@ -59,7 +57,6 @@ extension DetailsViewController: DetailsViewProtocol {
         let okAction = UIAlertAction(title: "OK", style: .default)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
-    
         print(error.localizedDescription)
     }
 }

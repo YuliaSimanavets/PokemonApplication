@@ -104,7 +104,6 @@ class CustomDetailsView: UIView {
     }
     
     func set(_ data: CustomViewModel) {
-        
         pokemonsNameLabel.text = data.pokemonsName
         pokemonsTypeLabel.text = "type: " + data.pokemonsType
         pokemonsWeightLabel.text = "weight: " + data.pokemonsWeight + " " + "kg"

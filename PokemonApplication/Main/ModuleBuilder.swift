@@ -17,7 +17,10 @@ class ModuleBuilder: Builder {
     static func createPokemonModule() -> UIViewController {
         let view = PokemonViewController()
         let dataManager = DataManager()
-        let presenter = PokemonPresenter(view: view, dataManager: dataManager)
+        let storageManager = PokemonStorageManager()
+        let presenter = PokemonPresenter(view: view,
+                                         dataManager: dataManager,
+                                         storageManager: storageManager)
         view.presenter = presenter
         return view
     }
@@ -25,8 +28,11 @@ class ModuleBuilder: Builder {
     static func createDetailsModule(url: String) -> UIViewController {
         let view = DetailsViewController()
         let dataManager = DataManager()
-        let presenter = DetailsPresenter(view: view, dataManager: dataManager, pokemonURL: url)
+        let presenter = DetailsPresenter(view: view,
+                                         dataManager: dataManager,
+                                         pokemonURL: url)
         view.presenter = presenter
+        view.title = "Pokemon Details"
         return view
     }
 }

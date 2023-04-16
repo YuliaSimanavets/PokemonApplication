@@ -21,13 +21,11 @@ class DataManager: DataManagerProtocol {
         let urlString = "https://pokeapi.co/api/v2/pokemon" + "?" + "offset=\(offset)" + "&" + "limit=\(limit)"
         
         guard let url = URL(string: urlString) else { return }
-        
         URLSession.shared.dataTask(with: url) { data, _, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
             do {
                 let pokemonsData = try JSONDecoder().decode(Pokemons.self, from: data!)
                 completion(.success(pokemonsData.results))
@@ -41,13 +39,11 @@ class DataManager: DataManagerProtocol {
     func getDetailsPokemon(url: String, completion: @escaping (Result<PokemonDetails?, Error>) -> Void) {
 
         guard let url = URL(string: url) else { return }
-        
         URLSession.shared.dataTask(with: url) { data, _, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
             do {
                 let pokemonData = try JSONDecoder().decode(PokemonDetails.self, from: data!)
                 completion(.success(pokemonData))
@@ -55,7 +51,6 @@ class DataManager: DataManagerProtocol {
             } catch {
                 completion(.failure(error))
             }
-            
         }.resume()
     }
 
@@ -63,15 +58,12 @@ class DataManager: DataManagerProtocol {
         
         guard let imageURL = URL(string: url) else { return nil }
         var pokemonImage: UIImage?
-        
         do {
             let imageData = try? Data(contentsOf: imageURL)
             pokemonImage = UIImage(data: imageData!)
-
         } catch {
             print(error.localizedDescription)
         }
-        
         return pokemonImage
     }
 }
