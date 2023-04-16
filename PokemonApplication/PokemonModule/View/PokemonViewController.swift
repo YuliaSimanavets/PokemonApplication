@@ -24,6 +24,13 @@ class PokemonViewController: UIViewController,
         return collectionView
     }()
     
+    private let showMoreButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Show more", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let headerTitle = "Choose your pokemon 🙌🏼"
 
     override func viewDidLoad() {
@@ -42,12 +49,19 @@ class PokemonViewController: UIViewController,
                                         withReuseIdentifier: HeaderCollectionView.identifier)
 
         createActivityIndicator()
+
+        view.addSubview(showMoreButton)
+        showMoreButton.addTarget(self, action: #selector(actionShowMore), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             pokemonsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             pokemonsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             pokemonsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            pokemonsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            pokemonsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -25),
+            
+            showMoreButton.topAnchor.constraint(equalTo: pokemonsCollectionView.bottomAnchor, constant: 10),
+            showMoreButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            showMoreButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
     
@@ -99,6 +113,11 @@ class PokemonViewController: UIViewController,
         guard let detailsUrl = presenter.pokemons?[sender.row].url else { return }
         let detailsViewController = ModuleBuilder.createDetailsModule(url: detailsUrl)
         navigationController?.pushViewController(detailsViewController, animated: true)
+    }
+    
+    @objc
+    func actionShowMore() {
+        presenter.loadNextPokemons()
     }
     
     private func createActivityIndicator() {

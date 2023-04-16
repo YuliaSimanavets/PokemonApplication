@@ -9,16 +9,16 @@ import Foundation
 import UIKit
 
 protocol DataManagerProtocol {
-    func getPokemons(completion: @escaping (Result<[Pokemon]?, Error>) -> Void)
+    func getPokemons(limit: Int, offset: Int, completion: @escaping (Result<[Pokemon]?, Error>) -> Void)
     func getDetailsPokemon(url: String, completion: @escaping (Result<PokemonDetails?, Error>) -> Void)
     func getImage(url: String) -> UIImage?
 }
 
 class DataManager: DataManagerProtocol {
     
-    func getPokemons(completion: @escaping (Result<[Pokemon]?, Error>) -> Void) {
+    func getPokemons(limit: Int, offset: Int, completion: @escaping (Result<[Pokemon]?, Error>) -> Void) {
         
-        let urlString = "https://pokeapi.co/api/v2/pokemon"
+        let urlString = "https://pokeapi.co/api/v2/pokemon" + "?" + "offset=\(offset)" + "&" + "limit=\(limit)"
         
         guard let url = URL(string: urlString) else { return }
         

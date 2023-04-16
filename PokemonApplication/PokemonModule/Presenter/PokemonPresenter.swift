@@ -11,12 +11,17 @@ import CoreData
 protocol PokemonViewProtocol: AnyObject {
     func succes()
     func failure(error: Error)
+    
+//    func showData(_ data: [PokemonModel])
+//    func disablePagination()
 }
 
 protocol PokemonViewPresenterProtocol: AnyObject {
     init(view: PokemonViewProtocol, dataManager: DataManagerProtocol)
     var pokemons: [PokemonModel]? { get set }
-    func getPokemonsFromAPI()
+    func getPokemonsFromAPIAndPutInDB(limit: Int)
+    func loadNextPokemons()
+    var page: Int { get set }
 }
 
 class PokemonPresenter: PokemonViewPresenterProtocol {
@@ -27,27 +32,50 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
     
     let context = CoreDataManager.shared.context
     
+    var page = 0
+    let limit = 10
+    
     required init(view: PokemonViewProtocol, dataManager: DataManagerProtocol) {
         self.view = view
         self.dataManager = dataManager
-        getPokemonsFromAPI()
+        getPokemonsFromAPIAndPutInDB(limit: limit)
         
         if pokemons == nil {
             pokemons = getPokemonsFromDataBase().map({ PokemonModel(name: $0.name ?? "", url: $0.url ?? "") })
         }
     }
     
-    func getPokemonsFromAPI() {
-        
-        dataManager.getPokemons { [weak self] result in
-            guard let self = self else { return }
+    func getPokemonsFromAPIAndPutInDB(limit: Int) {
 
+        dataManager.getPokemons(limit: limit, offset: limit * page) { [weak self] result in
+            guard let self = self else { return }
+            
             DispatchQueue.main.async {
                 switch result {
                 case .success(let pokemons):
                     self.pokemons = pokemons?.map({ PokemonModel(name: $0.name, url: $0.url) })
+                    self.view?.succes()
+                case .failure(let error):
+                    self.view?.failure(error: error)
+                }
+            }
+        }
+    }
+    
+    func getAnotherPokemonsFromAPIAndPutInDB(limit: Int) {
+
+        dataManager.getPokemons(limit: limit, offset: limit * page) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let pokemons):
+                    guard let newPokemons = pokemons?.map({ PokemonModel(name: $0.name, url: $0.url) }) else { return }
+                    for item in newPokemons {
+                        self.pokemons?.append(item)
+                    }
                     self.deletePokemonsFromDataBase()
-                    self.savePokemonToDatabase(pokemons: self.pokemons ?? [])
+                    self.savePokemonsToDatabase(pokemons: self.pokemons ?? [])
                     self.view?.succes()
                 case .failure(let error):
                     self.view?.failure(error: error)
@@ -56,7 +84,12 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
         }
     }
 
-    func savePokemonToDatabase(pokemons: [PokemonModel]) {
+    func loadNextPokemons() {
+        page += 1
+        getAnotherPokemonsFromAPIAndPutInDB(limit: limit) // or any other limit you want
+    }
+    
+    func savePokemonsToDatabase(pokemons: [PokemonModel]) {
         
         for item in pokemons {
             guard let pokemonEntity = NSEntityDescription.insertNewObject(forEntityName: "PokemonEntity", into: context) as? PokemonEntity else { return }
