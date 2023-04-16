@@ -46,6 +46,7 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
                 switch result {
                 case .success(let pokemons):
                     self.pokemons = pokemons?.map({ PokemonModel(name: $0.name, url: $0.url) })
+                    self.deletePokemonsFromDataBase()
                     self.savePokemons(pokemons: self.pokemons ?? [])
                     self.view?.succes()
                 case .failure(let error):
@@ -88,5 +89,20 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
             print("Error fetching")
         }
         return []
+    }
+    
+    func deletePokemonsFromDataBase() {
+        
+        let request = NSFetchRequest<PokemonEntity>(entityName: "PokemonEntity")
+        
+        do {
+            let result = try context.fetch(request)
+            for item in result {
+                context.delete(item)
+            }
+            try context.save()
+        } catch let error as NSError {
+            print("Could not fetch or delete. \(error), \(error.userInfo)")
+        }
     }
 }
