@@ -22,6 +22,7 @@ class ModuleBuilder: Builder {
                                          dataManager: dataManager,
                                          storageManager: storageManager)
         view.presenter = presenter
+        view.view.backgroundColor = .lightGray
         return view
     }
     
@@ -33,6 +34,7 @@ class ModuleBuilder: Builder {
                                          pokemonURL: url)
         view.presenter = presenter
         view.title = "Pokemon Details"
+        view.view.backgroundColor = .lightGray
         return view
     }
 }

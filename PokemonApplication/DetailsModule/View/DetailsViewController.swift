@@ -9,21 +9,22 @@ import UIKit
 
 class DetailsViewController: UIViewController {
 
-    var presenter: DetailsViewPresenterProtocol!
+    var presenter: DetailsViewPresenterProtocol?
     private var customView = CustomDetailsView()
     private var activityIndicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .lightGray
-        
         view.addSubview(customView)
         customView.translatesAutoresizingMaskIntoConstraints = false
         
-        presenter.getPokemon()
+        setupConstraints()
         createActivityIndicator()
-        
+        presenter?.getPokemon()
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             customView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             customView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -39,8 +40,8 @@ class DetailsViewController: UIViewController {
     }
 }
 
+// MARK: - DetailsViewProtocol
 extension DetailsViewController: DetailsViewProtocol {
-    
     func setPokemon(pokemon: CustomViewModel?) {
         guard let pokemon = pokemon else { return }
         customView.set(pokemon)

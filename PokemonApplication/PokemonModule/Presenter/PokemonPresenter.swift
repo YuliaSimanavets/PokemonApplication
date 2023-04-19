@@ -26,7 +26,7 @@ protocol PokemonViewPresenterProtocol: AnyObject {
 class PokemonPresenter: PokemonViewPresenterProtocol {
     
     weak var view: PokemonViewProtocol?
-    var dataManager: DataManagerProtocol!
+    var dataManager: DataManagerProtocol?
     let storageManager: StorageManagerProtocol?
     
     var pokemons: [PokemonModel]?
@@ -43,7 +43,7 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
     
     func getPokemonsFromAPI(limit: Int) {
 
-        dataManager.getPokemons(limit: limit, offset: limit * page) { [weak self] result in
+        dataManager?.getPokemons(limit: limit, offset: limit * page) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -60,7 +60,7 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
     
     func getAnotherPokemonsFromAPIAndPutInDB(limit: Int) {
 
-        dataManager.getPokemons(limit: limit, offset: limit * page) { [weak self] result in
+        dataManager?.getPokemons(limit: limit, offset: limit * page) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {

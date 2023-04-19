@@ -23,7 +23,7 @@ protocol DetailsViewPresenterProtocol: AnyObject {
 class DetailsPresenter: DetailsViewPresenterProtocol {
     
     weak var view: DetailsViewProtocol?
-    var dataManager: DataManagerProtocol!
+    var dataManager: DataManagerProtocol?
     var pokemon: PokemonDetails?
         
     var pokemonUrl: String
@@ -36,7 +36,7 @@ class DetailsPresenter: DetailsViewPresenterProtocol {
         
     func getPokemon() {
         
-        dataManager.getDetailsPokemon(url: pokemonUrl) { [weak self] result in
+        dataManager?.getDetailsPokemon(url: pokemonUrl) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -49,7 +49,7 @@ class DetailsPresenter: DetailsViewPresenterProtocol {
                                                                    pokemonsType: pokemon.types[0].type.name,
                                                                    pokemonsHeight: String(pokemon.height),
                                                                    pokemonsWeight: String(pokemon.weight),
-                                                                   pokemonsImage: self.dataManager.getImage(url: pokemon.sprites.frontDefault)))
+                                                                   pokemonsImage: self.dataManager?.getImage(url: pokemon.sprites.frontDefault)))
                 case .failure(let error):
                     self.view?.failure(error: error)
                 }

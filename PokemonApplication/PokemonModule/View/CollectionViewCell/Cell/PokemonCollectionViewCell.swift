@@ -51,6 +51,10 @@ class PokemonCollectionViewCell: BaseCollectionViewCell {
         contentView.addSubview(nameLabel)
         contentView.addSubview(chevronImageView)
         
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             dotImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             dotImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),

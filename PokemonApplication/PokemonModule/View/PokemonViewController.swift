@@ -7,12 +7,9 @@
 
 import UIKit
 
-class PokemonViewController: UIViewController,
-                             UICollectionViewDelegate,
-                             UICollectionViewDataSource,
-                             UICollectionViewDelegateFlowLayout {
+class PokemonViewController: UIViewController {
 
-    var presenter: PokemonViewPresenterProtocol!
+    var presenter: PokemonViewPresenterProtocol?
     private var activityIndicator = UIActivityIndicatorView()
     
     private let pokemonsCollectionView: UICollectionView = {
@@ -36,9 +33,10 @@ class PokemonViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .lightGray
+        addSubviews()
+        setupConstraints()
+        createActivityIndicator()
         
-        view.addSubview(pokemonsCollectionView)
         pokemonsCollectionView.delegate = self
         pokemonsCollectionView.dataSource = self
         
@@ -47,12 +45,15 @@ class PokemonViewController: UIViewController,
         pokemonsCollectionView.register(HeaderCollectionView.self,
                                         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                         withReuseIdentifier: HeaderCollectionView.identifier)
-
-        createActivityIndicator()
-
+    }
+    
+    private func addSubviews() {
+        view.addSubview(pokemonsCollectionView)
         view.addSubview(showMoreButton)
         showMoreButton.addTarget(self, action: #selector(actionShowMore), for: .touchUpInside)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             pokemonsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             pokemonsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -65,76 +66,78 @@ class PokemonViewController: UIViewController,
         ])
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return presenter.pokemons?.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PokemonCollectionViewCell.identifier, for: indexPath) as? PokemonCollectionViewCell else { return UICollectionViewCell() }
-        
-        let name = presenter.pokemons?[indexPath.item].name
-        let url = presenter.pokemons?[indexPath.item].url
-        cell.set(.init(name: name ?? "", url: url ?? ""))
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let frame = collectionView.frame
-        let widthCell = frame.width - CGFloat(20)
-        let heightCell = CGFloat(50)
-        return CGSize(width: widthCell, height: heightCell)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        tapOnCellAction(indexPath)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionView.identifier, for: indexPath) as? HeaderCollectionView else { return UICollectionReusableView() }
-        
-        let item = headerTitle
-        header.set(.init(titleText: item))
-        
-        return header
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
-        return CGSize(width: view.frame.size.width, height: 60)
+    private func createActivityIndicator() {
+        activityIndicator.center = self.view.center
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
     }
     
     @objc
     func tapOnCellAction(_ sender: IndexPath) {
-        
-        guard let detailsUrl = presenter.pokemons?[sender.row].url else { return }
+        guard let detailsUrl = presenter?.pokemons?[sender.row].url else { return }
         let detailsViewController = ModuleBuilder.createDetailsModule(url: detailsUrl)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
     @objc
     func actionShowMore() {
-        presenter.loadNextPokemons()
-    }
-    
-    private func createActivityIndicator() {
-
-        activityIndicator.center = self.view.center
-        view.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
+        presenter?.loadNextPokemons()
     }
 }
 
+// MARK: - UICollectionViewDataSource
+extension PokemonViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return presenter?.pokemons?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PokemonCollectionViewCell.identifier, for: indexPath) as? PokemonCollectionViewCell else { return UICollectionViewCell() }
+        
+        let name = presenter?.pokemons?[indexPath.item].name
+        let url = presenter?.pokemons?[indexPath.item].url
+        cell.set(.init(name: name ?? "", url: url ?? ""))
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionView.identifier, for: indexPath) as? HeaderCollectionView else { return UICollectionReusableView() }
+        
+        let item = headerTitle
+        header.set(.init(titleText: item))
+        return header
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension PokemonViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let frame = collectionView.frame
+        let widthCell = frame.width - CGFloat(20)
+        let heightCell = CGFloat(50)
+        return CGSize(width: widthCell, height: heightCell)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.size.width, height: 60)
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+extension PokemonViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        tapOnCellAction(indexPath)
+    }
+}
+
+// MARK: - PokemonViewProtocol
 extension PokemonViewController: PokemonViewProtocol {
     
     func succes() {

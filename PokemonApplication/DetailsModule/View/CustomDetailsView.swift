@@ -76,9 +76,9 @@ class CustomDetailsView: UIView {
     }
     
     private func setupView() {
-        
         backgroundColor = .cellsColor
         layer.cornerRadius = 20
+        
         addSubview(pokemonsNameLabel)
         addSubview(pokemonsImageView)
         addSubview(stackView)
@@ -87,6 +87,10 @@ class CustomDetailsView: UIView {
         stackView.addArrangedSubview(pokemonsWeightLabel)
         stackView.addArrangedSubview(pokemonsHeightLabel)
         
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             pokemonsNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
             pokemonsNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -99,7 +103,6 @@ class CustomDetailsView: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
-            
         ])
     }
     
