@@ -56,11 +56,11 @@ class PokemonViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             pokemonsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            pokemonsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            pokemonsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            pokemonsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -25),
+            pokemonsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: ConstantsOffset.sideOffset.rawValue),
+            pokemonsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -ConstantsOffset.sideOffset.rawValue),
+            pokemonsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -ConstantsOffset.topBottomOffset.rawValue),
             
-            showMoreButton.topAnchor.constraint(equalTo: pokemonsCollectionView.bottomAnchor, constant: 10),
+            showMoreButton.topAnchor.constraint(equalTo: pokemonsCollectionView.bottomAnchor),
             showMoreButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             showMoreButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])

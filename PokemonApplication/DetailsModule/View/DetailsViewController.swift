@@ -28,8 +28,8 @@ class DetailsViewController: UIViewController {
         NSLayoutConstraint.activate([
             customView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             customView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            customView.widthAnchor.constraint(equalToConstant: 300),
-            customView.heightAnchor.constraint(equalToConstant: 350)
+            customView.widthAnchor.constraint(equalToConstant: ConstantsOffset.widthCustomView.rawValue),
+            customView.heightAnchor.constraint(equalToConstant: ConstantsOffset.heightCustomView.rawValue)
         ])
     }
     

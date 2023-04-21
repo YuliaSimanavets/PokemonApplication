@@ -45,7 +45,7 @@ class PokemonCollectionViewCell: BaseCollectionViewCell {
         super.setupView()
         
         contentView.backgroundColor = .cellsColor
-        contentView.layer.cornerRadius = 12
+        contentView.layer.cornerRadius = ConstantsOffset.cornerRadius.rawValue
         
         contentView.addSubview(dotImageView)
         contentView.addSubview(nameLabel)

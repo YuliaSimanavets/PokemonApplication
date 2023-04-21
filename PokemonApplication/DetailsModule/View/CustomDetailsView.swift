@@ -77,7 +77,7 @@ class CustomDetailsView: UIView {
     
     private func setupView() {
         backgroundColor = .cellsColor
-        layer.cornerRadius = 20
+        layer.cornerRadius = ConstantsOffset.cornerRadius.rawValue
         
         addSubview(pokemonsNameLabel)
         addSubview(pokemonsImageView)
@@ -92,17 +92,17 @@ class CustomDetailsView: UIView {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            pokemonsNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
+            pokemonsNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: ConstantsOffset.topBottomOffset.rawValue),
             pokemonsNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            pokemonsImageView.topAnchor.constraint(equalTo: pokemonsNameLabel.bottomAnchor, constant: 20),
+            pokemonsImageView.topAnchor.constraint(equalTo: pokemonsNameLabel.bottomAnchor, constant: ConstantsOffset.topBottomOffset.rawValue),
             pokemonsImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            pokemonsImageView.widthAnchor.constraint(equalToConstant: 120),
-            pokemonsImageView.heightAnchor.constraint(equalToConstant: 120),
+            pokemonsImageView.widthAnchor.constraint(equalToConstant: ConstantsOffset.sizeImage.rawValue),
+            pokemonsImageView.heightAnchor.constraint(equalToConstant: ConstantsOffset.sizeImage.rawValue),
             
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: ConstantsOffset.sideOffset.rawValue),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -ConstantsOffset.sideOffset.rawValue),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -ConstantsOffset.topBottomOffset.rawValue)
         ])
     }
     
