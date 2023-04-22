@@ -18,9 +18,11 @@ class ModuleBuilder: Builder {
         let view = PokemonViewController()
         let dataManager = DataManager()
         let storageManager = PokemonStorageManager()
+        let reachability = Reachability()
         let presenter = PokemonPresenter(view: view,
                                          dataManager: dataManager,
-                                         storageManager: storageManager)
+                                         storageManager: storageManager,
+                                         reachability: reachability)
         view.presenter = presenter
         view.view.backgroundColor = .lightGray
         return view

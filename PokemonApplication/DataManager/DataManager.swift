@@ -14,7 +14,7 @@ protocol DataManagerProtocol {
     func getImage(url: String) -> UIImage?
 }
 
-class DataManager: DataManagerProtocol {
+final class DataManager: DataManagerProtocol {
     
     enum QueryItems: String{
         case offset
@@ -36,7 +36,7 @@ class DataManager: DataManagerProtocol {
         urlComponents.queryItems = [queryItemOffset, queryItemLimit]
         
         guard let url = urlComponents.url?.absoluteString else { return }
-        var request = URLRequest(url: URL(string: url)!, timeoutInterval: Double.infinity)
+        let request = URLRequest(url: URL(string: url)!, timeoutInterval: Double.infinity)
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 completion(.failure(error))
@@ -72,14 +72,44 @@ class DataManager: DataManagerProtocol {
 
     func getImage(url: String) -> UIImage? {
         
-        guard let imageURL = URL(string: url) else { return nil }
         var pokemonImage: UIImage?
-        do {
-            let imageData = try? Data(contentsOf: imageURL)
-            pokemonImage = UIImage(data: imageData!)
-        } catch {
-            print(error.localizedDescription)
-        }
+        guard let imageURL = URL(string: url) else { return nil }
+        
+        URLSession.shared.dataTask(with: imageURL) { (data, response, error) in
+            if error != nil {
+                guard let imageData = data else { return }
+                
+                DispatchQueue.main.async {
+                    pokemonImage = UIImage(data: imageData)
+                }
+            }
+        }.resume()
         return pokemonImage
     }
+
+/*
+ var pokemonImage: UIImage?
+ guard let imageURL = URL(string: url) else { return nil }
+ var pokemonImage: UIImage?
+ print(imageURL)
+ 
+ let request = URLRequest(url: imageURL, timeoutInterval: Double.infinity)
+ URLSession.shared.dataTask(with: request) { data, _, error in
+ if error != nil {
+ DispatchQueue.main.async {
+ do {
+ let imageData = try? Data(contentsOf: imageURL)
+ pokemonImage = UIImage(data: imageData!)
+ print(pokemonImage)
+ } catch {
+ print(error.localizedDescription)
+ }
+ }
+ 
+ }
+ }.resume()
+ return pokemonImage
+ }
+ */
+
 }

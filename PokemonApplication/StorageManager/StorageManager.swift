@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 protocol StorageManagerProtocol {
     func getPokemonsFromDataBase() -> [PokemonEntity]
@@ -14,9 +15,14 @@ protocol StorageManagerProtocol {
     func deletePokemonsFromDataBase()
 }
 
-class PokemonStorageManager: StorageManagerProtocol {
+final class PokemonStorageManager: StorageManagerProtocol {
     
-    let context = CoreDataManager.shared.context
+    private var appDelegate: AppDelegate {
+        UIApplication.shared.delegate as! AppDelegate
+    }
+    private var context: NSManagedObjectContext {
+        appDelegate.persistentContainer.viewContext
+    }
     
     func getPokemonsFromDataBase() -> [PokemonEntity] {
         
@@ -55,7 +61,7 @@ class PokemonStorageManager: StorageManagerProtocol {
             }
             try context.save()
         } catch let error as NSError {
-            print("Could not fetch or delete. \(error), \(error.userInfo)")
+            print("Could not fetch or delete. \(error.localizedDescription), \(error.userInfo)")
         }
     }
 }

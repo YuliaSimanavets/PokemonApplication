@@ -16,10 +16,12 @@ protocol PokemonViewProtocol: AnyObject {
 protocol PokemonViewPresenterProtocol: AnyObject {
     init(view: PokemonViewProtocol,
          dataManager: DataManagerProtocol,
-         storageManager: StorageManagerProtocol)
+         storageManager: StorageManagerProtocol,
+         reachability: ReachabilityProtocol)
     var pokemons: [PokemonModel]? { get }
     func getPokemonsFromAPI(limit: Int)
-    func getAnotherPokemonsFromAPIAndPutInDB(limit: Int)
+    func getPokemonsFromBD()
+//    func getAnotherPokemonsFromAPIAndPutInDB(limit: Int)
     func loadNextPokemons()
 }
 
@@ -28,17 +30,24 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
     weak var view: PokemonViewProtocol?
     var dataManager: DataManagerProtocol?
     let storageManager: StorageManagerProtocol?
+    let reachability: ReachabilityProtocol?
     
     var pokemons: [PokemonModel]?
     var page = 0
     let limit = 10
     
-    required init(view: PokemonViewProtocol, dataManager: DataManagerProtocol, storageManager: StorageManagerProtocol) {
+    required init(view: PokemonViewProtocol, dataManager: DataManagerProtocol, storageManager: StorageManagerProtocol, reachability: ReachabilityProtocol) {
         self.view = view
         self.dataManager = dataManager
         self.storageManager = storageManager
-        getPokemonsFromAPI(limit: limit)
-        pokemons = pokemons ?? storageManager.getPokemonsFromDataBase().map({ PokemonModel(name: $0.name ?? "", url: $0.url ?? "") })
+        self.reachability = reachability
+        
+        if reachability.isNetworkAvailable() {
+            getPokemonsFromAPI(limit: limit)
+        } else {
+            getPokemonsFromBD()
+        }
+        
     }
     
     func getPokemonsFromAPI(limit: Int) {
@@ -50,6 +59,8 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
                 switch result {
                 case .success(let pokemons):
                     self.pokemons = pokemons?.map({ PokemonModel(name: $0.name, url: $0.url) })
+                    self.storageManager?.deletePokemonsFromDataBase()
+                    self.storageManager?.savePokemonsToDatabase(pokemons: self.pokemons ?? [])
                     self.view?.succes()
                 case .failure(let error):
                     self.view?.failure(error: error)
@@ -58,6 +69,10 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
         }
     }
     
+    func getPokemonsFromBD() {
+        self.pokemons = storageManager?.getPokemonsFromDataBase().map({ PokemonModel(name: $0.name ?? "", url: $0.url ?? "") })
+    }
+ /*
     func getAnotherPokemonsFromAPIAndPutInDB(limit: Int) {
 
         dataManager?.getPokemons(limit: limit, offset: limit * page) { [weak self] result in
@@ -79,9 +94,12 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
             }
         }
     }
-
+*/
+    
+//  need to fix
     func loadNextPokemons() {
         page += 1
-        getAnotherPokemonsFromAPIAndPutInDB(limit: limit)
+        getPokemonsFromAPI(limit: limit)
+//        getAnotherPokemonsFromAPIAndPutInDB(limit: limit)
     }
 }
