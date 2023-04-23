@@ -20,7 +20,7 @@ protocol PokemonViewPresenterProtocol: AnyObject {
          reachability: ReachabilityProtocol)
     var pokemons: [PokemonModel]? { get }
     func getPokemonsFromAPI(limit: Int)
-    func getPokemonsFromBD()
+    func getPokemonsFromDB()
 //    func getAnotherPokemonsFromAPIAndPutInDB(limit: Int)
     func loadNextPokemons()
 }
@@ -45,9 +45,8 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
         if reachability.isNetworkAvailable() {
             getPokemonsFromAPI(limit: limit)
         } else {
-            getPokemonsFromBD()
+            getPokemonsFromDB()
         }
-        
     }
     
     func getPokemonsFromAPI(limit: Int) {
@@ -59,7 +58,7 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
                 switch result {
                 case .success(let pokemons):
                     self.pokemons = pokemons?.map({ PokemonModel(name: $0.name, url: $0.url) })
-                    self.storageManager?.deletePokemonsFromDataBase()
+//                    self.storageManager?.deletePokemonsFromDataBase()
                     self.storageManager?.savePokemonsToDatabase(pokemons: self.pokemons ?? [])
                     self.view?.succes()
                 case .failure(let error):
@@ -69,7 +68,7 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
         }
     }
     
-    func getPokemonsFromBD() {
+    func getPokemonsFromDB() {
         self.pokemons = storageManager?.getPokemonsFromDataBase().map({ PokemonModel(name: $0.name ?? "", url: $0.url ?? "") })
     }
  /*

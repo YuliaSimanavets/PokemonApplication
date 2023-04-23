@@ -17,7 +17,8 @@ class ModuleBuilder: Builder {
     static func createPokemonModule() -> UIViewController {
         let view = PokemonViewController()
         let dataManager = DataManager()
-        let storageManager = PokemonStorageManager()
+        let coreDataManager = CoreDataManager()
+        let storageManager = PokemonStorageManager(coreDataManager: coreDataManager)
         let reachability = Reachability()
         let presenter = PokemonPresenter(view: view,
                                          dataManager: dataManager,

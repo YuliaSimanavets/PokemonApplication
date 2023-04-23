@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -32,34 +31,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    func applicationWillTerminate(_ application: UIApplication) {
-        self.saveContext()
-    }
-
-//    MARK: - Core Data stack
-    
-    lazy var persistentContainer: NSPersistentContainer = {
-        
-        let managedObjectModelName = "PokemonModel"
-        let container = NSPersistentContainer(name: managedObjectModelName)
-        container.loadPersistentStores { _, error in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
-        return container
-    }()
-
-//    MARK: - Core Data saving support
-    
-    func saveContext() {
-        let context = persistentContainer.viewContext
-        guard context.hasChanges else { return }
-        do {
-            try context.save()
-        } catch let error as NSError {
-            fatalError("Unresolved error \(error), \(error.userInfo)")
-        }
-    }
 }
-

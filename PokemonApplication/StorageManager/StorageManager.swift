@@ -10,23 +10,23 @@ import CoreData
 import UIKit
 
 protocol StorageManagerProtocol {
+    init(coreDataManager: CoreDataManagerProtocol)
     func getPokemonsFromDataBase() -> [PokemonEntity]
     func savePokemonsToDatabase(pokemons: [PokemonModel])
     func deletePokemonsFromDataBase()
 }
 
 final class PokemonStorageManager: StorageManagerProtocol {
-    
-    private var appDelegate: AppDelegate {
-        UIApplication.shared.delegate as! AppDelegate
-    }
-    private var context: NSManagedObjectContext {
-        appDelegate.persistentContainer.viewContext
+    var coreDataManager: CoreDataManagerProtocol?
+
+    init(coreDataManager: CoreDataManagerProtocol) {
+        self.coreDataManager = coreDataManager
     }
     
     func getPokemonsFromDataBase() -> [PokemonEntity] {
         
         let request = NSFetchRequest<PokemonEntity>(entityName: "PokemonEntity")
+        guard let context = coreDataManager?.context else { return [] }
         do {
             return try context.fetch(request)
         } catch {
@@ -36,7 +36,7 @@ final class PokemonStorageManager: StorageManagerProtocol {
     }
     
     func savePokemonsToDatabase(pokemons: [PokemonModel]) {
-        
+        guard let context = coreDataManager?.context else { return }
         for item in pokemons {
             guard let pokemonEntity = NSEntityDescription.insertNewObject(forEntityName: "PokemonEntity", into: context) as? PokemonEntity else { return }
             pokemonEntity.name = item.name
@@ -52,7 +52,7 @@ final class PokemonStorageManager: StorageManagerProtocol {
     }
     
     func deletePokemonsFromDataBase() {
-        
+        guard let context = coreDataManager?.context else { return }
         let request = NSFetchRequest<PokemonEntity>(entityName: "PokemonEntity")
         do {
             let result = try context.fetch(request)
