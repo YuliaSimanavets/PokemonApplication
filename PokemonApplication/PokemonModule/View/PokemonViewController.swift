@@ -33,6 +33,7 @@ class PokemonViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .lightGray
         addSubviews()
         setupConstraints()
         createActivityIndicator()

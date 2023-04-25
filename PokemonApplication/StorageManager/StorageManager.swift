@@ -10,10 +10,8 @@ import CoreData
 import UIKit
 
 protocol StorageManagerProtocol {
-    init(coreDataManager: CoreDataManagerProtocol)
     func getPokemonsFromDataBase() -> [PokemonEntity]
     func savePokemonsToDatabase(pokemons: [PokemonModel])
-    func deletePokemonsFromDataBase()
 }
 
 final class PokemonStorageManager: StorageManagerProtocol {
@@ -38,30 +36,29 @@ final class PokemonStorageManager: StorageManagerProtocol {
     func savePokemonsToDatabase(pokemons: [PokemonModel]) {
         guard let context = coreDataManager?.context else { return }
         for item in pokemons {
-            guard let pokemonEntity = NSEntityDescription.insertNewObject(forEntityName: "PokemonEntity", into: context) as? PokemonEntity else { return }
-            pokemonEntity.name = item.name
-            pokemonEntity.url = item.url
+            let fetchRequest: NSFetchRequest<PokemonEntity> = PokemonEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "url == %@", item.url)
+            
+            do {
+                let results = try context.fetch(fetchRequest)
+                if results.first != nil {
+                    continue
+                } else {
+                    guard let pokemonEntity = NSEntityDescription.insertNewObject(forEntityName: "PokemonEntity", into: context) as? PokemonEntity else { return }
+                    pokemonEntity.name = item.name
+                    pokemonEntity.url = item.url
+                }
+            } catch let error as NSError {
+                print("Core Data Error: \(error), \(error.userInfo)")
+            }
         }
+        
         if context.hasChanges {
             do {
                 try context.save()
             } catch let error as NSError {
                 print("Core Data Error: \(error), \(error.userInfo)")
             }
-        }
-    }
-    
-    func deletePokemonsFromDataBase() {
-        guard let context = coreDataManager?.context else { return }
-        let request = NSFetchRequest<PokemonEntity>(entityName: "PokemonEntity")
-        do {
-            let result = try context.fetch(request)
-            for item in result {
-                context.delete(item)
-            }
-            try context.save()
-        } catch let error as NSError {
-            print("Could not fetch or delete. \(error.localizedDescription), \(error.userInfo)")
         }
     }
 }

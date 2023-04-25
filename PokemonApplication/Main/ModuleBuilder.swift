@@ -7,12 +7,7 @@
 
 import UIKit
 
-protocol Builder {
-    static func createPokemonModule() -> UIViewController
-    static func createDetailsModule(url: String) -> UIViewController
-}
-
-class ModuleBuilder: Builder {
+final class ModuleBuilder {
     
     static func createPokemonModule() -> UIViewController {
         let view = PokemonViewController()
@@ -25,7 +20,6 @@ class ModuleBuilder: Builder {
                                          storageManager: storageManager,
                                          reachability: reachability)
         view.presenter = presenter
-        view.view.backgroundColor = .lightGray
         return view
     }
     
@@ -36,8 +30,6 @@ class ModuleBuilder: Builder {
                                          dataManager: dataManager,
                                          pokemonURL: url)
         view.presenter = presenter
-        view.title = "Pokemon Details"
-        view.view.backgroundColor = .lightGray
         return view
     }
 }

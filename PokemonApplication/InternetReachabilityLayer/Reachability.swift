@@ -9,38 +9,22 @@ import Foundation
 import Network
 
 protocol ReachabilityProtocol {
-    func isNetworkAvailable() -> Bool
+    func isNetworkAvailable(completion: @escaping (Bool) -> ())
 }
 
 final class Reachability: ReachabilityProtocol {
-    var pathMonitor: NWPathMonitor!
-    var path: NWPath?
     
-    lazy var pathUpdateHandler: ((NWPath) -> Void) = { path in
-        self.path = path
-        if path.status == NWPath.Status.satisfied {
-            print("Connected")
-        } else if path.status == NWPath.Status.unsatisfied {
-            print("Unsatisfied")
-        } else if path.status == NWPath.Status.requiresConnection {
-            print("RequiresConnection")
-        }
-    }
+    let monitor = NWPathMonitor()
+    let queue = DispatchQueue(label: "IsNetworkAvailable")
     
-    let backgroudQueue = DispatchQueue.global(qos: .background)
-    
-    init() {
-        pathMonitor = NWPathMonitor()
-        pathMonitor.pathUpdateHandler = self.pathUpdateHandler
-        pathMonitor.start(queue: backgroudQueue)
-    }
-    
-    func isNetworkAvailable() -> Bool {
-        if let path = self.path {
-            if path.status == NWPath.Status.satisfied {
-                return true
+    func isNetworkAvailable(completion: @escaping (Bool) -> ()) {
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                completion(true)
+            } else {
+                completion(false)
             }
         }
-        return false
+        monitor.start(queue: queue)
     }
 }

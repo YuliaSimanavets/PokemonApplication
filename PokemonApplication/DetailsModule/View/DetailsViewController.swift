@@ -16,6 +16,9 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Pokemon Details"
+        view.backgroundColor = .lightGray
+        
         view.addSubview(customView)
         customView.translatesAutoresizingMaskIntoConstraints = false
         

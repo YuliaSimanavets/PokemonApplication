@@ -9,9 +9,8 @@ import Foundation
 import UIKit
 
 protocol DataManagerProtocol {
-    func getPokemons(limit: Int, offset: Int, completion: @escaping (Result<[Pokemon]?, Error>) -> Void)
-    func getDetailsPokemon(url: String, completion: @escaping (Result<PokemonDetails?, Error>) -> Void)
-    func getImage(url: String) -> UIImage?
+    func loadPokemons(limit: Int, offset: Int, completion: @escaping (Result<[Pokemon]?, Error>) -> Void)
+    func loadDetailsPokemon(url: String, completion: @escaping (Result<PokemonDetails?, Error>) -> Void)
 }
 
 final class DataManager: DataManagerProtocol {
@@ -29,7 +28,7 @@ final class DataManager: DataManagerProtocol {
         return components
     }()
 
-    func getPokemons(limit: Int, offset: Int, completion: @escaping (Result<[Pokemon]?, Error>) -> Void) {
+    func loadPokemons(limit: Int, offset: Int, completion: @escaping (Result<[Pokemon]?, Error>) -> Void) {
         
         let queryItemOffset = URLQueryItem(name: QueryItems.offset.rawValue, value: String(offset))
         let queryItemLimit = URLQueryItem(name: QueryItems.limit.rawValue, value: String(limit))
@@ -45,14 +44,13 @@ final class DataManager: DataManagerProtocol {
             do {
                 let pokemonsData = try JSONDecoder().decode(Pokemons.self, from: data!)
                 completion(.success(pokemonsData.results))
-                
             } catch {
                 completion(.failure(error))
             }
         }.resume()
     }
  
-    func getDetailsPokemon(url: String, completion: @escaping (Result<PokemonDetails?, Error>) -> Void) {
+    func loadDetailsPokemon(url: String, completion: @escaping (Result<PokemonDetails?, Error>) -> Void) {
 
         guard let url = URL(string: url) else { return }
         URLSession.shared.dataTask(with: url) { data, _, error in
@@ -69,47 +67,4 @@ final class DataManager: DataManagerProtocol {
             }
         }.resume()
     }
-
-    func getImage(url: String) -> UIImage? {
-        
-        var pokemonImage: UIImage?
-        guard let imageURL = URL(string: url) else { return nil }
-        
-        URLSession.shared.dataTask(with: imageURL) { (data, response, error) in
-            if error != nil {
-                guard let imageData = data else { return }
-                
-                DispatchQueue.main.async {
-                    pokemonImage = UIImage(data: imageData)
-                }
-            }
-        }.resume()
-        return pokemonImage
-    }
-
-/*
- var pokemonImage: UIImage?
- guard let imageURL = URL(string: url) else { return nil }
- var pokemonImage: UIImage?
- print(imageURL)
- 
- let request = URLRequest(url: imageURL, timeoutInterval: Double.infinity)
- URLSession.shared.dataTask(with: request) { data, _, error in
- if error != nil {
- DispatchQueue.main.async {
- do {
- let imageData = try? Data(contentsOf: imageURL)
- pokemonImage = UIImage(data: imageData!)
- print(pokemonImage)
- } catch {
- print(error.localizedDescription)
- }
- }
- 
- }
- }.resume()
- return pokemonImage
- }
- */
-
 }
