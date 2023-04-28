@@ -14,6 +14,7 @@
 		CA0E9CB929F579A40070122E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E9CB829F579A40070122E /* CoreDataManager.swift */; };
 		CA1E5EFF29E8199900859528 /* DetailsPokemonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1E5EFE29E8199900859528 /* DetailsPokemonModel.swift */; };
 		CA1E5F0229E86C2A00859528 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1E5F0129E86C2900859528 /* UIColor.swift */; };
+		CA5DC05C29FA78EF00F93F1A /* NetworkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5DC05B29FA78EF00F93F1A /* NetworkRouter.swift */; };
 		CA77776F29E6FC8F00901CBD /* PokemonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA77776E29E6FC8F00901CBD /* PokemonCollectionViewCell.swift */; };
 		CA77777129E6FD0F00901CBD /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA77777029E6FD0F00901CBD /* BaseCollectionViewCell.swift */; };
 		CA77777329E700B100901CBD /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA77777229E700B100901CBD /* ModuleBuilder.swift */; };
@@ -71,6 +72,7 @@
 		CA0E9CB829F579A40070122E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		CA1E5EFE29E8199900859528 /* DetailsPokemonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPokemonModel.swift; sourceTree = "<group>"; };
 		CA1E5F0129E86C2900859528 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		CA5DC05B29FA78EF00F93F1A /* NetworkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouter.swift; sourceTree = "<group>"; };
 		CA77776E29E6FC8F00901CBD /* PokemonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCollectionViewCell.swift; sourceTree = "<group>"; };
 		CA77777029E6FD0F00901CBD /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		CA77777229E700B100901CBD /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
@@ -231,6 +233,14 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		CAA37D8929FBDC9300C52950 /* NetworkRouter */ = {
+			isa = PBXGroup;
+			children = (
+				CA5DC05B29FA78EF00F93F1A /* NetworkRouter.swift */,
+			);
+			path = NetworkRouter;
+			sourceTree = "<group>";
+		};
 		CAB4992A29F3EBC700E2858D /* InternetReachabilityLayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,6 +280,7 @@
 				CAB4992A29F3EBC700E2858D /* InternetReachabilityLayer */,
 				CAD31E1C29EC949A009B537A /* StorageManager */,
 				CA77777729E71CB200901CBD /* DataManager */,
+				CAA37D8929FBDC9300C52950 /* NetworkRouter */,
 				CAC276E829E5E5BE006BF348 /* PokemonModule */,
 				CA77777F29E7327A00901CBD /* DetailsModule */,
 				CA1E5F0329E86C3200859528 /* Extension */,
@@ -616,6 +627,7 @@
 				CA77778129E732B900901CBD /* DetailsViewController.swift in Sources */,
 				CA0E9CB929F579A40070122E /* CoreDataManager.swift in Sources */,
 				CA1E5EFF29E8199900859528 /* DetailsPokemonModel.swift in Sources */,
+				CA5DC05C29FA78EF00F93F1A /* NetworkRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
