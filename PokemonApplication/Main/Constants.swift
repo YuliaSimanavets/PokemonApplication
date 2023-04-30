@@ -50,3 +50,14 @@ enum PokemonsRouter {
         }
     }
 }
+
+enum APIError: Error {
+    case connection(Error)
+    case client(String)
+    case server
+    case unknown
+}
+
+struct ErrorMessage: Codable {
+    let message: String
+}

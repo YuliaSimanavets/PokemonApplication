@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-protocol NetworkRouter: URLRequestConvertible, URLConvertible {
+protocol NetworkRouterProtocol: URLRequestConvertible, URLConvertible {
     var basePath: String { get }
     var method: HTTPMethod { get }
     var path: String { get }
@@ -18,7 +18,7 @@ protocol NetworkRouter: URLRequestConvertible, URLConvertible {
     var queryParameters: [String: String]? { get }
 }
 
-final class MyRouter: NetworkRouter {
+final class NetworkRouter: NetworkRouterProtocol {
     
     private let router: PokemonsRouter
     

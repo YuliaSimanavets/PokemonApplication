@@ -153,7 +153,6 @@ extension PokemonViewController: PokemonViewProtocol {
         let okAction = UIAlertAction(title: "OK", style: .default)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
-    
-        print(error.localizedDescription)
+        activityIndicator.stopAnimating()
     }
 }

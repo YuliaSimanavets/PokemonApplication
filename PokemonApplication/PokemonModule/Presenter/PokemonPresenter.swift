@@ -50,7 +50,7 @@ class PokemonPresenter: PokemonViewPresenterProtocol {
     }
     
     func getPokemonsFromAPI(limit: Int) {
-        let networkRouter = MyRouter(router: PokemonsRouter.pokemons(offset:  String(limit * page), limit: String(limit)))
+        let networkRouter = NetworkRouter(router: PokemonsRouter.pokemons(offset:  String(limit * page), limit: String(limit)))
         
         dataManager?.loadPokemons(with: networkRouter) { [weak self] result in
             guard let self = self else { return }
